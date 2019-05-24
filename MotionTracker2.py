@@ -55,6 +55,7 @@ class Player():
         self.currency = 1000
         self.casual = True
         self.shop = False
+        self.freemove = False
         
     def health(self):
         return self.hp
@@ -85,7 +86,7 @@ this is why you don't spam heal your level 6 bulbasaur smh
         if self._poison:
             self.take_damage(1)
             print('*poison damage*')
-    
+
     def stats(self, damage_taken):
         print('health:',  self.health())
         print('damage taken:', damage_taken)
@@ -102,15 +103,26 @@ this is why you don't spam heal your level 6 bulbasaur smh
     def mode_casual(self):
         self.casual = True
         self.shop = False
+        self.freemove = False
 
     def mode_shop(self):
         self.casual = False
         self.shop = True
+        self.freemove = False
+        
+    def mode_freemove(self):
+        self.casual = False
+        self.shop = False
+        self.freemove = True
 
+    def freemove(self):
+        return self.freemove
+        
     def casual(self):
         return self.casual
 
     def shop(self):
+        
         return self.shop
 
     def s_healpots(self):
@@ -121,6 +133,8 @@ this is why you don't spam heal your level 6 bulbasaur smh
 class Game():
     def __init__(self):
         self.gu_mine = {(-1, -1), (4, 2)}
+        self.money_mine = {(2, 1), (-2, -3)}
+        self.spikes = {(1, 1), (-4, 0)}
     #------------------------------------------(process_command)-----------------------------------------------
     def process_command(self, p, command):
         check =  '''✔
@@ -151,7 +165,11 @@ class Game():
         if command == 'heal':
             p.heal()
             return check
-
+        
+        if command == 'freemove':
+            p.mode_freemove()
+            return check
+        
         if command == 'stats':
             return 'health: {}\nlocation: ({}, {})\ncredits: {}'.format(p.health(), p.mt.get_x(), p.mt.get_y(), p.currency)
 
@@ -174,39 +192,73 @@ class Game():
             return 'you tripped and fell'
 
     def process_command_shop(self, p, buy):
+        check =  '''✔
+        
+---'''
+        
         if buy == 'health pot':
             p.s_healpots()
+            return check
 
+        if buy == 'items':
+            return('''health pot - 200 credits
+-leave-
+''')
+            
         if buy == 'leave':
             p.mode_casual()
+            return check
+        
+        else:
+            return 'I dont understand'
+
+    def process_command_freemove(self, p, command):
+        check =  '''✔
+        
+---'''
+        p.mt.move(command)
+        p.mode_casual()
+        return check
     #------------------------------------------(playgame)--------------------------------------------------------
     def playgame(self):
         play = Player()
-        while play.casual == True: 
-            if play.mt.get_x() == 1 and play.mt.get_y() == 1:
-                play.take_damage(2)
-                play.stats(2)
+        while True:
+            while play.casual == True: 
 
-            position = (play.mt.get_x(), play.mt.get_y())
-            if position in self.gu_mine:
-                print('you stepped on a gu mine! Oh no too bad youll be taking damage of 1 each step')
-                play.poison()
+                position = (play.mt.get_x(), play.mt.get_y())
 
-            if play.health() == 0:
-                print('''---
-    game over (ya suck)
-    ---''')
-                break
-            
-            command = input("What dyou wanna do?\n => ")
-            result = self.process_command(play, command)
-            print(result)
-            
-        while play.shop == True:
-            buy = input("What do you want to buy\n => ")
-            s_result = self.process_command_shop(play, command)
-            print(result)
+                if position in self.spikes:
+                    print("Youch")
+                    play.take_damage(2)
+                    
+                if position in self.gu_mine:
+                    print('you stepped on a gu mine! Oh no too bad youll be taking damage of 1 each step')
+                    play.poison()
+                           
+                if position in self.money_mine:
+                    print("Oh look money owo\nplease dont abuse/grind money smh")
+                    play.currency_change(200)
+                    
+                if play.health() == 0:
+                    print('''---
+        game over (ya suck)
+        ---''')
+                    break
+                
+                command = input("What dyou wanna do?\n => ")
+                result = self.process_command(play, command)
+                print(result)
+                
+            while play.shop == True:
+                buy = input("What do you want to buy\n => ")
+                result = self.process_command_shop(play, buy)
+                print(result)
 
+            while play.freemove == True:
+                command = int(input("How many squares do you want to move forward? (if you put a word it will crash)\n => "))
+                result = self.process_command_freemove(play, command)
+                print(result)
+                
 game = Game()
 game.playgame()
 casual = True
@@ -214,7 +266,6 @@ casual = True
 #potential ideas that make me want die
 #currency ✔
 #actual poison lmao ✔
-#graphics
+#graphics *doesn't exist*
 #upgrades
 
-#--- so I added a shop. It works, but I cant exit it. Weird, it uses the same come to enter the shop. smh
