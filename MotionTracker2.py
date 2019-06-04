@@ -50,12 +50,15 @@ class Player():
     def __init__(self):
         self.mt = MotionTracker()
         self.hp = 10
-        self.healpot = 2
+        self.healpot = 1
+        self.small_heal = 2
         self._poison = False
         self.currency = 1000
         self.casual = True
         self.shop = False
         self.freemove = False
+        self.upgrades = False
+        self.upgrade_heal = 2 
         
     def health(self):
         return self.hp
@@ -94,6 +97,9 @@ this is why you don't spam heal your level 6 bulbasaur smh
     def c_healthpot(self):
         self.healpot += 1
 
+    def healpotamount(self):
+        return self.healpot
+        
     def currency(self):
         return self.currency()
 
@@ -104,17 +110,26 @@ this is why you don't spam heal your level 6 bulbasaur smh
         self.casual = True
         self.shop = False
         self.freemove = False
+        self.upgrades = False
 
     def mode_shop(self):
         self.casual = False
         self.shop = True
         self.freemove = False
+        self.upgrades = False
         
     def mode_freemove(self):
         self.casual = False
         self.shop = False
         self.freemove = True
+        self.upgrades = False
 
+    def mode_upgrades(self):
+        self.casual = False
+        self.shop = False
+        self.freemove = False
+        self.upgrades = True
+    
     def freemove(self):
         return self.freemove
         
@@ -127,7 +142,17 @@ this is why you don't spam heal your level 6 bulbasaur smh
 
     def s_healpots(self):
         if self.currency >= 200:
+            self.currency -= 200
             self.healpot += 1
+        else:
+            print('STOP WASTING YOUR MONEY ON YOUR LEVEL 6 BULBASAUR SMH')
+
+    def small_heal(self):
+        if self.small_heal >= 1:
+            self.small_heal -= 1
+            self.hp += self.upgrade_heal
+            print('''ur out
+''')
             
 #------------------------------------------(Game)---------------------------------------------------------------
 class Game():
@@ -162,8 +187,12 @@ class Game():
             p.status()
             return check
 
-        if command == 'heal':
+        if command == 'max heal':
             p.heal()
+            return check
+        
+        if command == 'heal':
+            p.small_heal()
             return check
         
         if command == 'freemove':
@@ -171,13 +200,12 @@ class Game():
             return check
         
         if command == 'stats':
-            return 'health: {}\nlocation: ({}, {})\ncredits: {}'.format(p.health(), p.mt.get_x(), p.mt.get_y(), p.currency)
+            return 'health: {}\nlocation: ({}, {})\ncredits: {}\nhealth pots: {}'.format(p.health(), p.mt.get_x(), p.mt.get_y(), p.currency,p.healpotamount())
 
         if command == 'inputs':
-            return (''' [go forward, turn right, turn left, turn around, location, free move(doesn't work), heal, stats, F (pull out gu mines), shop (doesn't work), input(current)]
+            return (''' [go forward, turn right, turn left, turn around, location, free move, heal, stats, F (pull out gu mines), shop
+, input(current)]
 ''')
-        if command == 'iwantdie':
-            return ("wow ok (ya suck)")
 
         if command == 'shop':
             p.mode_shop()
@@ -204,10 +232,14 @@ class Game():
             return('''health pot - 200 credits
 -leave-
 ''')
-            
+
+        if buy == 'upgrade':
+            p.mode_upgrades()
+        
         if buy == 'leave':
             p.mode_casual()
             return check
+
         
         else:
             return 'I dont understand'
@@ -219,6 +251,20 @@ class Game():
         p.mt.move(command)
         p.mode_casual()
         return check
+
+    def process_command_upgrades(self, p, command):
+        if command == 'upgrades':
+            print('''"heal" - adds one hp to small healpot amount-> 300 units
+max hp - max hp + 2 -> 500 units
+---'''
+                  .
+        if command == 'upgrade heal':0
+            if p.currency >= 500:
+                  p.currency -= 500:
+                  p.upgrades.heal += 1
+                
+            
+        
     #------------------------------------------(playgame)--------------------------------------------------------
     def playgame(self):
         play = Player()
@@ -255,8 +301,13 @@ class Game():
                 print(result)
 
             while play.freemove == True:
-                command = int(input("How many squares do you want to move forward? (if you put a word it will crash)\n => "))
+                command = int(input("How many squares do ++you want to move forward? (if you put a word it will crash)\n => "))
                 result = self.process_command_freemove(play, command)
+                print(result)
+
+            while play.upgrades == True:
+                command = int(input("what dyou want to upgrade\n => "))
+                result = self.process_command_upgrades(play, command)
                 print(result)
                 
 game = Game()
