@@ -60,7 +60,8 @@ class Player():
         self.shop = False
         self.freemove = False
         self.upgrades = False
-        self.upgrade_heal = 2 
+        self.upgrade_heal = 2
+        self.upgrade_max_hp = 10
         
     def health(self):
         return self.hp
@@ -242,7 +243,6 @@ upgrade - go to upgrade shop
         
         if buy == 'leave':
             p.mode_casual()
-            return check
 
         
         else:
@@ -261,15 +261,31 @@ upgrade - go to upgrade shop
             print('''"heal" -- adds one hp to small healpot amount-> 300 units
 max hp -- max hp + 2 -> 500 units
 ---'''
-
         if command == 'upgrade heal':
             if p.currency >= 500:
-                  p.currency -= 500:
-                  p.upgrades_heal += 1
+                p.currency -= 500
+                p.upgrade_heal += 2
+                return 'done'
+            else:
+                return 'ur too poor'
+                  
+        if command == 'upgrade maximum hp':
+            if p.currency >= 500:
+                p.currency -= 500
+                p.upgrade_max_hp += 2
+                return 'done'
+            else:
+                return 'ur too poor'
+
+        if command == 'leave':
+            p.mode_casual()
+                
+                  # kelson u scrub
                 
             
         
-    #------------------------------------------(playgame)--------------------------------------------------------
+
+#------------------------------------------(playgame)--------------------------------------------------------
     def playgame(self):
         play = Player()
         while True:
@@ -305,12 +321,12 @@ max hp -- max hp + 2 -> 500 units
                 print(result)
 
             while play.freemove == True:
-                command = int(input("How many squares do ++you want to move forward? (if you put a word it will crash)\n => "))
+                command = int(input("How many squares do you want to move forward? (if you put a word it will crash)\n => "))
                 result = self.process_command_freemove(play, command)
                 print(result)
 
             while play.upgrades == True:
-                command = int(input("what dyou want to upgrade\n => "))
+                command = input("what dyou want to upgrade\n => ")
                 result = self.process_command_upgrades(play, command)
                 print(result)
                 
@@ -322,5 +338,5 @@ casual = True
 #currency ✔
 #actual poison lmao ✔
 #graphics *doesn't exist*
-#upgrades
+#upgrades ✔
 
