@@ -239,7 +239,6 @@ class Game():
         
         if buy == 'leave':
             p.mode_casual()
-            return check
 
         
         else:
@@ -261,11 +260,22 @@ class Game():
         if command == 'upgrade heal':
             if p.currency >= 500:
                 p.currency -= 500
-                p.upgrades_heal += 2
+                p.upgrade_heal += 2
+                return 'done'
+            else:
+                return 'ur too poor'
         if command == 'upgrade maximum hp':
             if p.currency >= 500:
                 p.currency -= 500
-                p.upgrades_max_hp += 2
+                p.upgrade_max_hp += 2
+                return 'done'
+            else:
+                return 'ur too poor'
+
+        if command == 'leave':
+            p.mode_casual()
+                
+                
             
         
 
