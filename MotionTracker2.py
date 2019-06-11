@@ -1,3 +1,4 @@
+
 #------------------------------------------(Motion Tracker)---------------------------------------------------
 
 class MotionTracker:
@@ -55,6 +56,7 @@ class Player():
         self._poison = False
         self.currency = 1000
         self.casual = True
+        
         self.shop = False
         self.freemove = False
         self.upgrades = False
@@ -230,11 +232,13 @@ class Game():
 
         if buy == 'items':
             return('''health pot - 200 credits
+upgrade - go to upgrade shop
 -leave-
 ''')
 
         if buy == 'upgrade':
             p.mode_upgrades()
+            return check
         
         if buy == 'leave':
             p.mode_casual()
@@ -254,14 +258,14 @@ class Game():
 
     def process_command_upgrades(self, p, command):
         if command == 'upgrades':
-            print('''"heal" - adds one hp to small healpot amount-> 300 units
-max hp - max hp + 2 -> 500 units
+            print('''"heal" -- adds one hp to small healpot amount-> 300 units
+max hp -- max hp + 2 -> 500 units
 ---'''
-                  .
-        if command == 'upgrade heal':0
+
+        if command == 'upgrade heal':
             if p.currency >= 500:
                   p.currency -= 500:
-                  p.upgrades.heal += 1
+                  p.upgrades_heal += 1
                 
             
         
