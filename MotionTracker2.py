@@ -1,3 +1,4 @@
+
 #------------------------------------------(Motion Tracker)---------------------------------------------------
 
 class MotionTracker:
@@ -51,7 +52,7 @@ class Player():
         self.mt = MotionTracker()
         self.hp = 10
         self.healpot = 1
-        self.small_heal = 2
+        self.smallheal= 2
         self._poison = False
         self.currency = 1000
         self.casual = True
@@ -60,7 +61,7 @@ class Player():
         self.upgrades = False
         self.upgrade_heal = 2
         self.upgrade_max_hp = 10
-        
+
     def health(self):
         return self.hp
     
@@ -149,9 +150,9 @@ this is why you don't spam heal your level 6 bulbasaur smh
             print('STOP WASTING YOUR MONEY ON YOUR LEVEL 6 BULBASAUR SMH')
 
     def small_heal(self):
-        if self.small_heal >= 1:
-            self.small_heal -= 1
-            self.upgrade_heal += self.hp
+        if self.smallheal >= 1:
+            self.smallheal -= 1
+            self.health += self.upgrade_heal
             print('''ur out
 ''')
             
