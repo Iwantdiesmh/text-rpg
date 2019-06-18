@@ -1,4 +1,3 @@
-
 #------------------------------------------(Motion Tracker)---------------------------------------------------
 
 class MotionTracker:
@@ -56,7 +55,6 @@ class Player():
         self._poison = False
         self.currency = 1000
         self.casual = True
-        
         self.shop = False
         self.freemove = False
         self.upgrades = False
@@ -153,7 +151,7 @@ this is why you don't spam heal your level 6 bulbasaur smh
     def small_heal(self):
         if self.small_heal >= 1:
             self.small_heal -= 1
-            self.hp += self.upgrade_heal
+            self.upgrade_heal += self.hp
             print('''ur out
 ''')
             
@@ -233,13 +231,11 @@ class Game():
 
         if buy == 'items':
             return('''health pot - 200 credits
-upgrade - go to upgrade shop
 -leave-
 ''')
 
         if buy == 'upgrade':
             p.mode_upgrades()
-            return check
         
         if buy == 'leave':
             p.mode_casual()
@@ -258,9 +254,9 @@ upgrade - go to upgrade shop
 
     def process_command_upgrades(self, p, command):
         if command == 'upgrades':
-            print('''"heal" -- adds one hp to small healpot amount-> 300 units
-max hp -- max hp + 2 -> 500 units
----'''
+            print('''"heal" - adds two hp to small healpot amount-> 500 units
+"maximum hp" -> max hp + 2 = 500 units
+---''')
         if command == 'upgrade heal':
             if p.currency >= 500:
                 p.currency -= 500
@@ -268,7 +264,6 @@ max hp -- max hp + 2 -> 500 units
                 return 'done'
             else:
                 return 'ur too poor'
-                  
         if command == 'upgrade maximum hp':
             if p.currency >= 500:
                 p.currency -= 500
@@ -280,7 +275,6 @@ max hp -- max hp + 2 -> 500 units
         if command == 'leave':
             p.mode_casual()
                 
-                  # kelson u scrub
                 
             
         
