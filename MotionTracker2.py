@@ -52,7 +52,7 @@ class Player():
         self.mt = MotionTracker()
         self.hp = 10
         self.healpot = 1
-        self.smallheal= 2
+        self.smallheal = 2
         self._poison = False
         self.currency = 1000
         self.casual = True
