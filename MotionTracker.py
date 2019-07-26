@@ -1,3 +1,5 @@
+from pokemon import makePidgey, makeZigzagoon, playgame
+
 
 #------------------------------------------(Motion Tracker)---------------------------------------------------
 
@@ -60,7 +62,8 @@ class Player():
         self.freemove = False
         self.upgrades = False
         self.upgrade_heal = 2
-        self.upgrade_max_hp = 10
+        self.upgrade_max_hp = 2
+        self.yeetPidgey = makePidgey()
 
     def health(self):
         return self.hp
@@ -88,6 +91,8 @@ this is why you don't spam heal your level 6 bulbasaur smh
         self._poison = False
         
     def status(self):
+        print('dun dun dun dun dun crazy pokemon music and all that')
+        playgame()
         if self._poison:
             self.take_damage(1)
             print('*poison damage*')
@@ -324,6 +329,20 @@ class Game():
                 command = input("what dyou want to upgrade\n => ")
                 result = self.process_command_upgrades(play, command)
                 print(result)
+
+def fight_zigzagoon(poke):
+    p = makePidgey()
+    z = makeZigzagoon()
+    while p.hp > 0 and z.hp > 0:
+        a = int(input('wut u want do 0(tackle) or 1(shell smash)'))
+        p.do_move(z, a)
+        if z.hp > 0:
+            choice = random.randint(0,len(z.moves)-1)
+            z.do_move(p, choice)
+    if z.hp == 0:
+        return 'zig ded'
+    else:
+        return 'pid ded'
                 
 game = Game()
 game.playgame()
